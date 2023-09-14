@@ -1,0 +1,59 @@
+/* * {
+    border: 1px solid red;
+} */
+
+body {
+    background-color: #836B8C;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+/* header */
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    color: white;
+    font: bold 48px "Fira Sans", sans-serif;
+}
+
+
+/* CONTENT/BODY */
+
+.content {
+    display: flex;
+    padding: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* recipe blocks */
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: darkgray;
+    padding: 10px;
+    margin: 16px;
+    border-radius: 20px;
+    width: 275px;
+    height: 200px;
+}
+
+.card img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* text for each recipe */
+.card a {
+    position: absolute;
+    text-align: center;
+    width: 275px;
+    text-decoration: none;
+    color: white;
+    font: 28px "Fira Sans", sans-serif;
+}

@@ -4,7 +4,7 @@
 [] chicken and waffles
 [x] butter chicken
 [] steak
-[] fried chicken
+[x] fried chicken
 [] chicken tacos
 [] teriyaki chicken
 [] chicken and PESTO

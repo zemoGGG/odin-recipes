@@ -50,6 +50,11 @@ body {
     color: white;
 }
 
+.steps {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .ingredients,.steps li {
     font: 18px "Fira Sans", sans-serif;
 }

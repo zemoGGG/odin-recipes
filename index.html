@@ -23,6 +23,10 @@
         <div class="card">
             <img src="recipes/images/curry.png">
             <a href="recipes/curry.html"><span class="star" title="A Matthew Specialty">&#9733;</span> Japanese Curry</a>
+            <div class="popup">
+                <button onclick="alert('Option 1')">Beef Curry</button>
+                <button onclick="alert('Option 2')">Katsu Curry</button>
+            </div>
         </div>
 
         <div class="card">
@@ -113,29 +117,53 @@
 <script>
     document.querySelectorAll('.card').forEach(card => {
         const popup = card.querySelector('.popup');
-        const overlay = document.querySelector('.overlay');
 
+        if (!popup) {
+            return;
+        }
+        
         function showPopup() {
             if (popup) {
                 popup.classList.add('active');
-                overlay.classList.add('active');
+                document.addEventListener('click', outsideClickListener);
             }
         }
 
         function hidePopup() {
             if (popup) {
                 popup.classList.remove('active');
-                overlay.classList.remove('active');
+                document.removeEventListener('click', outsideClickListener);
+            }
+        }
+
+        function outsideClickListener(event) {
+            if(!card.contains(event.target) && !popup.contains(event.target)) {
+                hidePopup();
             }
         }
         
         card.addEventListener('mouseenter', showPopup);
-        //card.addEventListener('mouseleave', hidePopup);
-        overlay.addEventListener('click', hidePopup)
+        card.addEventListener('mouseleave', hidePopup);
 
-        card.addEventListener('touchstart', showPopup);
-        overlay.addEventListener('touchstart', hidePopup);
-    })
+        card.addEventListener('click', function(event) {
+            event.stopPropagation();
+            if(popup.classList.contains('active')) {
+                hidePopup();
+            } else {
+                showPopup();
+            }
+        });
+
+        popup.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.popup.active').forEach(popup => {
+            popup.classList.remove('active');
+        });
+    });
 </script>
 
 

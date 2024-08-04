@@ -62,17 +62,31 @@
 
         <div class="card">
             <img src="recipes/images/rolls.png">
-            <a href="recipes/rolls.html">Vanessa's Dinner Rolls</a>
+            <a href="recipes/rolls.html">Japanese Milk Rolls</a>
         </div>
 
         <div class="card">
             <img src="recipes/images/pizzadough.png">
             <a href="recipes/pizzadough.html">Pizza Dough</a>
+            <div class="popup">
+                <button onclick="alert('Option 1')">New York Style</button>
+                <button onclick="alert('Option 2')">Neapolitan Style</button>
+            </div>
         </div>
 
         <div class="card">
             <img src="recipes/images/generaltso.png">
             <a href="recipes/generaltso.html">General Tso's Chicken</a>
+        </div>
+
+        <div class="card">
+            <img src="recipes/images/swiss-steak.png">
+            <a href="recipes/swisssteak.html">Swiss Steak</a>
+        </div>
+
+        <div class="card">
+            <img src="recipes/images/potatochipchicken.jpeg">
+            <a href="recipes/potatochipchicken.html">Potato Chip Chicken</a>
         </div>
         
     </div>
@@ -92,5 +106,38 @@
             <a href="recipes/cheesecake.html"><span class="star" title="A Vanessa Specialty">&#9733;</span> Cheesecake</a>
         </div>
     </div>
+
+    <div class="overlay"></div>
+
+
+<script>
+    document.querySelectorAll('.card').forEach(card => {
+        const popup = card.querySelector('.popup');
+        const overlay = document.querySelector('.overlay');
+
+        function showPopup() {
+            if (popup) {
+                popup.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        function hidePopup() {
+            if (popup) {
+                popup.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        }
+        
+        card.addEventListener('mouseenter', showPopup);
+        //card.addEventListener('mouseleave', hidePopup);
+        overlay.addEventListener('click', hidePopup)
+
+        card.addEventListener('touchstart', showPopup);
+        overlay.addEventListener('touchstart', hidePopup);
+    })
+</script>
+
+
 </body>
 </html>

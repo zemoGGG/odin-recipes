@@ -6,6 +6,7 @@
     <title>Vanessa and Matty's Recipes</title>
     <link href="styles.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script src="scripts/homepage.js"></script>
 </head>
 <body>
     <div class="header purple">
@@ -23,10 +24,10 @@
         <div class="card">
             <img src="recipes/images/curry.png">
             <a href="recipes/curry.html"><span class="star" title="A Matthew Specialty">&#9733;</span> Japanese Curry</a>
-            <div class="popup">
-                <button onclick="alert('Option 1')">Beef Curry</button>
-                <button onclick="alert('Option 2')">Katsu Curry</button>
-            </div>
+            <!-- <div class="popup">
+                <button class="dropdown_item" onclick="alert('Option 1')">Beef Curry</button>
+                <button class="dropdown_item" onclick="alert('Option 2')">Katsu Curry</button>
+            </div> -->
         </div>
 
         <div class="card">
@@ -47,6 +48,7 @@
         <div class="card">
             <img src="recipes/images/chickenparm.png">
             <a href="recipes/chickenparm.html">Chicken Parmesan</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
         <div class="card">
@@ -73,8 +75,9 @@
             <img src="recipes/images/pizzadough.png">
             <a >Pizza Dough</a>
             <div class="popup">
-                <button onclick="location.replace('recipes/pizzadough.html')">New York Style</button>
-                <button onclick="alert('Option 2')">Neapolitan Style</button>
+                <button class="dropdown_item" onclick="location.replace('recipes/nystyledough.html')">New York Style</button>
+                <button class="dropdown_item" onclick="location.replace('recipes/neapolitandough.html')">Neapolitan Style</button>
+                <button class="dropdown_item" onclick="location.replace('recipes/outdoordough.html')">Outdoor Oven</button>
             </div>
         </div>
 
@@ -82,9 +85,9 @@
             <img src="recipes/images/pizzasauce.jpg">
             <a>Pizza Sauces</a>
             <div class="popup">
-                <button onclick="location.replace('recipes/quickeasymarinara.html')">Quick & Easy Marinara</button>
-                <button onclick="alert('Option 2')">White Sauce</button>
-                <button onclick="location.replace('recipes/pesto.html')">Pesto Sauce</button>
+                <button class="dropdown_item" onclick="location.replace('recipes/quickeasymarinara.html')">Quick & Easy Marinara</button>
+                <button class="dropdown_item" onclick="alert('Option 2')">White Sauce &#9888;</button>
+                <button class="dropdown_item" onclick="location.replace('recipes/pesto.html')">Pesto Sauce &#9888;</button>
             </div>
         </div>
 
@@ -96,36 +99,43 @@
         <div class="card">
             <img src="recipes/images/swiss-steak.png">
             <a href="recipes/swisssteak.html">Swiss Steak</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
         <div class="card">
             <img src="recipes/images/potatochipchicken.jpeg">
             <a href="recipes/potatochipchicken.html">Potato Chip Chicken</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
         <div class="card">
             <img src="recipes/images/pesto.jpg">
             <a href="recipes/pesto.html">Pesto</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
         <div class="card">
             <img src="recipes/images/ragubolognese.JPG">
             <a href="recipes/ragubolognese.html">Ragù Bolognese</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
         <div class="card">
             <img src="recipes/images/pastaallagenovese.jpg">
             <a href="recipes/pastaallagenovese.html">Pasta alla Genovese</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
         <div class="card">
             <img src="recipes/images/meatballs.jpg">
             <a href="recipes/meatballs.html">Meatballs</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
         <div class="card">
             <img src="recipes/images/beefbroccoli.jpg">
             <a href="recipes/beefbroccoli.html">Beef with Broccoli</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
 
     </div>
@@ -143,64 +153,9 @@
         <div class="card">
             <img src="recipes/images/cheesecake.png">
             <a href="recipes/cheesecake.html"><span class="star" title="A Vanessa Specialty">&#9733;</span> Cheesecake</a>
+            <span class="caution" title="Coming Soon">&#9888;</span>
         </div>
     </div>
-
-    <div class="overlay"></div>
-
-
-<script>
-    document.querySelectorAll('.card').forEach(card => {
-        const popup = card.querySelector('.popup');
-
-        if (!popup) {
-            return;
-        }
-        
-        function showPopup() {
-            if (popup) {
-                popup.classList.add('active');
-                document.addEventListener('click', outsideClickListener);
-            }
-        }
-
-        function hidePopup() {
-            if (popup) {
-                popup.classList.remove('active');
-                document.removeEventListener('click', outsideClickListener);
-            }
-        }
-
-        function outsideClickListener(event) {
-            if(!card.contains(event.target) && !popup.contains(event.target)) {
-                hidePopup();
-            }
-        }
-        
-        card.addEventListener('mouseenter', showPopup);
-        card.addEventListener('mouseleave', hidePopup);
-
-        card.addEventListener('click', function(event) {
-            event.stopPropagation();
-            if(popup.classList.contains('active')) {
-                hidePopup();
-            } else {
-                showPopup();
-            }
-        });
-
-        popup.addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
-    });
-
-    document.addEventListener('click', function() {
-        document.querySelectorAll('.popup.active').forEach(popup => {
-            popup.classList.remove('active');
-        });
-    });
-</script>
-
 
 </body>
 </html>

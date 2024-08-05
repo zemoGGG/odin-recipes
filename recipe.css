@@ -29,6 +29,12 @@ body {
     height: 300px;
 }
 
+.difficulty {
+    font: 24px "Fira Sans", sans-serif;
+    align-items: center;
+    justify-content: center;
+}
+
 /* main recipe content */
 .content {
     display: flex;
@@ -67,6 +73,10 @@ body {
 /* gold star */
 .star {
     color: gold;
+}
+
+.redstar {
+    color: red;
 }
 
 

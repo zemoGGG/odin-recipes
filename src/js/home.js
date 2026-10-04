@@ -60,7 +60,7 @@
   // Mobile: tuck the toolbar away while scrolling down, bring it back on scroll up.
   const toolbar = document.querySelector(".toolbar");
   const mobile = matchMedia("(max-width: 799px)"); // keep in sync with main.css
-  const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 60;
+  const header = document.querySelector(".site-header");
   let lastY = null;
   let ticking = false;
 
@@ -73,7 +73,7 @@
     ticking = false;
     const y = window.scrollY;
     // The toolbar is the first thing in its .wrap, so that's where it sits before it sticks.
-    const stuckAt = toolbar.parentElement.getBoundingClientRect().top + y - headerHeight;
+    const stuckAt = toolbar.parentElement.getBoundingClientRect().top + y - header.offsetHeight;
 
     if (!mobile.matches || y <= stuckAt || document.activeElement === search) {
       toolbar.classList.remove("is-hidden");

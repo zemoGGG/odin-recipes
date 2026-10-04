@@ -1,11 +1,19 @@
 // Site-wide: the mobile hamburger menu in the header.
 (() => {
   const header = document.querySelector(".site-header");
-  const toggle = header && header.querySelector(".nav-toggle");
+  if (!header) return;
+
+  // Sticky bars below the header (e.g. the home toolbar) sit at --header-h. Keep it accurate
+  // when the inline nav wraps onto extra lines in a narrow desktop window.
+  new ResizeObserver(() => {
+    document.documentElement.style.setProperty("--header-h", `${header.offsetHeight}px`);
+  }).observe(header);
+
+  const toggle = header.querySelector(".nav-toggle");
   if (!toggle) return;
   const nav = document.getElementById(toggle.getAttribute("aria-controls"));
   // Keep in sync with the hamburger breakpoint in main.css.
-  const mobile = matchMedia("(max-width: 719px)");
+  const mobile = matchMedia("(max-width: 719px) and (pointer: coarse)");
 
   function setOpen(open) {
     toggle.setAttribute("aria-expanded", String(open));

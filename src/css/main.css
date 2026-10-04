@@ -184,9 +184,10 @@ html:not(.js) [data-enhanced] { display: none; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-mid { opacity: 0; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bot { transform: translateY(-5px) rotate(-45deg); }
 
-/* Mobile: collapse the nav into a dropdown behind the hamburger (JS only; without JS it wraps inline). */
-@media (max-width: 719px) {
-    html.js .site-header-inner { flex-wrap: nowrap; height: var(--header-h); padding-block: 0; }
+/* Phones only (narrow + touch): collapse the nav into a dropdown behind the hamburger.
+   Desktop windows of any width keep the inline nav, as does no-JS. */
+@media (max-width: 719px) and (pointer: coarse) {
+    html.js .site-header-inner { flex-wrap: nowrap; height: 60px; padding-block: 0; }
     html.js .brand { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     html.js .nav-toggle { display: grid; }
 

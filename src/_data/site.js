@@ -14,12 +14,13 @@ export default {
   // Family members with a personal cookbook (recipes imported from other sites).
   // The key is used in URLs (/cookbooks/<key>/) and must be lowercase letters, numbers or dashes.
   members: [
-    { key: "member-one", label: "Member One's Cookbook", short: "Member One" },
-    { key: "member-two", label: "Member Two's Cookbook", short: "Member Two" },
+    { key: "mom", label: "Mom's Cookbook", short: "Mom" },
+    { key: "hannah", label: "Hannah's Cookbook", short: "Hannah" },
   ],
 
-  // Cloudflare Worker that parses and saves imported recipes (see worker/README.md).
+  // Cloudflare Worker that parses and saves imported recipes (see "Family Cookbooks" in README.md).
   importApi: "https://odin-recipes-import.matthewm711college.workers.dev",
+  //importApi: "http://localhost:8787",
 
   categories: [
     { key: "mains", label: "Mains" },

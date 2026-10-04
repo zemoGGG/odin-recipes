@@ -7,6 +7,9 @@ backend:
   name: github
   repo: {{ site.repo }}
   branch: main
+  # "Sign In with GitHub" goes through the import Worker (worker/src/oauth.js).
+  base_url: {{ site.importApi }}
+  auth_endpoint: auth
   commit_messages:
     create: "Add recipe: {{ '{{slug}}' }}"
     update: "Update recipe: {{ '{{slug}}' }}"

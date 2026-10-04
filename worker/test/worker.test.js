@@ -87,6 +87,15 @@ test("CORS preflight from the site is allowed; other origins are refused", async
   assert.equal(evil.status, 403);
 });
 
+test("missing secrets are reported by name", async () => {
+  const res = await worker.fetch(
+    new Request("https://import.example.workers.dev/parse", { method: "POST", headers: { Origin: ORIGIN }, body: "{}" }),
+    { ...env, PASSCODE_HASH: undefined }
+  );
+  assert.equal(res.status, 500);
+  assert.match((await res.json()).error, /missing the PASSCODE_HASH secret/);
+});
+
 test("wrong passcode is rejected", async () => {
   const res = await call("/parse", { passcode: "nope", url: "https://example.com/cookies" });
   assert.equal(res.status, 401);

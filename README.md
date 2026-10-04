@@ -1,106 +1,50 @@
 # Vanessa & Matty's Recipes
 
-Family recipe site, live at **https://zemoggg.github.io/odin-recipes/**. It started as the final project of The Odin Project's HTML Foundations course.
+Our family recipe site: **https://zemoggg.github.io/odin-recipes/**
 
-Recipes are Markdown files in `src/recipes/`. [Eleventy](https://www.11ty.dev/) builds them into a static site, and GitHub Actions deploys it to GitHub Pages on every push to `main`.
+It started as the final project of [The Odin Project](https://www.theodinproject.com/)'s HTML Foundations course. It has grown into the place where we keep the recipes we actually cook, and where the rest of the family can keep theirs.
 
-## Adding or editing recipes (admin)
+## What's on the site
 
-1. Go to **https://zemoggg.github.io/odin-recipes/admin/**.
-2. Choose **Sign In Using Access Token** and paste your GitHub token (see below). The "Sign In with GitHub" button needs an OAuth server, which this setup skips.
-3. Add or edit a recipe and click **Save**. That commits straight to `main`, and the site updates in about a minute (watch the **Actions** tab).
+### The kitchens
 
-Each recipe has a **Status**:
+- **Matty's Kitchen:** weeknight mains, pasta, soups, pizza from scratch and the sauces that go with them.
+- **Vanessa's Bakery:** desserts and baking.
 
-| Status | What happens |
-| --- | --- |
-| Published | Shows on the home page and gets its own page |
-| Coming soon | Shows a greyed-out card on the home page with no page yet |
-| Draft | Hidden from the site; use it for the wishlist |
+A gold star ★ marks a house specialty. Recipes marked *Coming soon* are on the way.
 
-### One-time setup
+### Family Cookbooks
 
-- **Pages:** in the repo, go to *Settings → Pages → Build and deployment → Source* and pick **GitHub Actions**.
-- **Admin token:** on GitHub, go to *Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token*.
-  - Repository access: *Only select repositories* → `odin-recipes`
-  - Permissions: **Contents: Read and write**
-  - The CMS remembers the token in your browser, so you only paste it once per device.
+Everyone in the family gets their own cookbook at [/cookbooks/](https://zemoggg.github.io/odin-recipes/cookbooks/). To add a recipe from another website:
 
-## Family Cookbooks (importing recipes from other sites)
+1. Open [Import a recipe](https://zemoggg.github.io/odin-recipes/cookbooks/import/).
+2. Enter the family passcode (ask Matty). You only need to do this once per device.
+3. Pick your name, paste the link to the recipe, and click **Get recipe**.
+4. Check the ingredients and steps, fix anything that looks off, add your own notes, and click **Save**.
 
-Family members can save recipes from other websites into their own cookbook at **/cookbooks/**. They open **/cookbooks/import/**, enter the family passcode, pick their name and paste a link. The importer reads the recipe's ingredients, steps, times and photo, and shows them in a form to check over. Saving commits the recipe to `src/cookbooks/` (plus its photo in `src/images/cookbooks/`), and the site rebuilds in about a minute.
+The recipe shows up in your cookbook about a minute later, in the same easy-to-read layout as the rest of the site. Every imported recipe links back to the site it came from.
 
-Imported recipe pages are public but marked `noindex`, and always credit and link the original site.
+Some websites block the importer. When that happens, the form still opens, so you can copy the recipe in by hand.
 
-How it works: the static site can't fetch other websites or hold a GitHub token, so a small Cloudflare Worker (`worker/`) does both. The parsing code is in `lib/recipe-import/`.
+## Using a recipe
 
-### One-time setup
+- **Search** by recipe name or ingredient, and filter by kitchen or category.
+- **Tick off ingredients** as you gather them.
+- **Tap a step** to mark it done while you cook.
+- **Print** a clean copy with the *Print recipe* button.
+- Works on phones, and follows your device's light or dark mode.
 
-1. **GitHub token for the Worker.** Create a fine-grained token (*Settings → Developer settings → Personal access tokens → Fine-grained tokens*) with access to only `odin-recipes` and **Contents: Read and write**. Make it separate from your admin token, so you can revoke either one on its own.
-2. **Cloudflare.** Sign up for a free account at https://dash.cloudflare.com/sign-up, then:
-   ```sh
-   cd worker
-   npm install
-   npx wrangler login
-   npm run hash-passcode                    # type the family passcode, copy the hash it prints
-   npx wrangler secret put PASSCODE_HASH    # paste the hash
-   npx wrangler secret put GITHUB_TOKEN     # paste the token from step 1
-   npm run deploy                           # prints the Worker URL
-   ```
-3. Put the Worker URL in `importApi` in `src/_data/site.js`, then commit and push.
-4. Share the passcode and the **/cookbooks/import/** link with the family.
+## How it's built
 
-### Day to day
+- Recipes are plain Markdown files, built into a fast static site by [Eleventy](https://www.11ty.dev/) and hosted on GitHub Pages.
+- Matty and Vanessa edit their recipes through [Sveltia CMS](https://github.com/sveltia/sveltia-cms).
+- A small [Cloudflare Worker](https://developers.cloudflare.com/workers/) reads recipes from other websites for the importer. It uses the [schema.org Recipe](https://schema.org/Recipe) data that most recipe sites include.
+- Photos are resized automatically when the site is built.
 
-- **Add or rename a family member:** edit `members` in `src/_data/site.js`. The import page, cookbook pages and admin pick it up after the next deploy. The Worker sees the change within about 5 minutes.
-- **Change the passcode:** `cd worker && npm run hash-passcode`, then `npx wrangler secret put PASSCODE_HASH`. Each device will ask for the new passcode the next time it's used.
-- **Fix, hide or delete an imported recipe:** use the **Family cookbooks** collection in the admin. Set Status to *Draft* to hide a recipe without deleting it.
-- **Check what the importer finds on a page:** `npm run parse -- <recipe url>`.
-- **Some sites block the importer** (it shows "wouldn't let the importer in"). The form still opens empty with the link credited, so the recipe can be pasted in by hand.
-
-### Testing the importer locally
-
-```sh
-npm test                       # parser + Worker tests
-cd worker
-# .dev.vars (gitignored) holds local secrets:
-#   PASSCODE_HASH=<hash>
-#   GITHUB_TOKEN=<token>
-#   BRANCH=import-test         # an existing scratch branch, so test imports don't go live
-#   SITE_URL=http://localhost:8080/odin-recipes/   # read the member list from your local site
-npm run dev                    # http://localhost:8787
-```
-
-Then temporarily set `importApi` to `http://localhost:8787`, run `npm start`, and open http://localhost:8080/odin-recipes/cookbooks/import/.
-
-## Local development
+To run it locally:
 
 ```sh
 npm install
-npm start        # http://localhost:8080/odin-recipes/
-npm run build    # outputs to _site/
+npm start   # http://localhost:8080/odin-recipes/
+npm test
 ```
-
-You can also use the admin locally without a token. Run `npm start`, open http://localhost:8080/odin-recipes/admin/ in Chrome or Edge, and choose **Work with Local Repository**. Then pick this folder, and edits are written straight to `src/`.
-
-## Project layout
-
-```
-src/
-  _data/site.js           site title, kitchens (authors), categories, statuses
-  _includes/layouts/      base page + recipe page templates
-  _includes/partials/     recipe card
-  admin/                  Sveltia CMS (config.yml is generated from site.js)
-  css/main.css            all styles
-  js/                     home page filters, recipe page extras
-  images/recipes/         recipe photos (resized automatically at build time)
-  recipes/*.md            one file per recipe
-  cookbooks/*.md          recipes imported into family members' cookbooks
-  family*.njk             Family Cookbooks pages and the import page
-  index.njk               home page
-lib/recipe-import/        turns a recipe web page into the site's recipe format (+ tests)
-worker/                   Cloudflare Worker behind the import page
-eleventy.config.js
-```
-
-To add a new category or kitchen, edit `src/_data/site.js`. The admin dropdowns pick it up automatically.

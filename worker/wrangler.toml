@@ -2,6 +2,7 @@
 # Secrets (set once with `npx wrangler secret put <NAME>`):
 #   GITHUB_TOKEN   fine-grained token: only this repo, Contents read and write
 #   PASSCODE_HASH  output of `npm run hash-passcode`
+#   GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET  from the GitHub OAuth App for the admin's "Sign In with GitHub"
 name = "odin-recipes-import"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
@@ -17,3 +18,7 @@ ALLOWED_ORIGINS = "https://zemoggg.github.io,http://localhost:8080"
 name = "PASSCODE_LIMITER"
 namespace_id = "1001"
 simple = { limit = 20, period = 60 }
+
+[observability.logs]
+enabled = false
+invocation_logs = true

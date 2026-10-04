@@ -3,3 +3,4 @@ _site/
 .cache/
 .dev.vars
 .wrangler/
+SETUP.md

@@ -18,7 +18,7 @@ export default {
     { key: "hannah", label: "Hannah's Cookbook", short: "Hannah" },
   ],
 
-  // Cloudflare Worker that parses and saves imported recipes (see "Family Cookbooks" in README.md).
+  // Cloudflare Worker that parses and saves imported recipes (see SETUP.md).
   importApi: "https://odin-recipes-import.matthewm711college.workers.dev",
   //importApi: "http://localhost:8787",
 

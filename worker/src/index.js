@@ -1,10 +1,12 @@
 // Family Cookbooks import API (Cloudflare Worker).
 //   POST /parse  { passcode, url }                      → parsed recipe for the preview form
 //   POST /save   { passcode, member, recipe, notes }    → commits src/cookbooks/<slug>.md (+ photo)
-// Setup and secrets: see the "Family Cookbooks" section of the repo README.
+//   GET  /auth, /callback                              → "Sign In with GitHub" for /admin/ (oauth.js)
+// Setup and secrets: see SETUP.md.
 import { parseRecipePage, cleanText, absoluteUrl } from "../../lib/recipe-import/index.js";
 import { toMarkdown } from "./frontmatter.js";
 import { commitFiles, fileExists } from "./github.js";
+import { allowedOrigins, handleAuth, handleCallback } from "./oauth.js";
 
 const MAX_BODY_BYTES = 200_000;
 const MAX_PAGE_BYTES = 3_000_000;
@@ -29,12 +31,21 @@ class HttpError extends Error {
 
 export default {
   async fetch(request, env) {
+    const { pathname } = new URL(request.url);
+    if (request.method === "GET" && pathname === "/auth") return handleAuth(request, env);
+    if (request.method === "GET" && pathname === "/callback") return handleCallback(request, env);
+
     const cors = corsHeaders(request, env);
     if (!cors) return json({ error: "This site isn't allowed to use the importer." }, 403, {});
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
 
-    const route = ROUTES[new URL(request.url).pathname];
+    const route = ROUTES[pathname];
     if (!route || request.method !== "POST") return json({ error: "Not found" }, 404, cors);
+
+    const missing = ["PASSCODE_HASH", "GITHUB_TOKEN"].filter((name) => !env[name]);
+    if (missing.length) {
+      return json({ error: `The importer isn't set up yet: missing the ${missing.join(" and ")} secret.` }, 500, cors);
+    }
 
     try {
       const body = await readJson(request);
@@ -227,7 +238,7 @@ export function sniffImage(b) {
 
 function corsHeaders(request, env) {
   const origin = request.headers.get("Origin");
-  const allowed = (env.ALLOWED_ORIGINS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const allowed = allowedOrigins(env);
   const headers = { Vary: "Origin" };
   if (!origin) return headers; // not a browser request (e.g. curl while testing)
   if (!allowed.includes(origin)) return null;
@@ -263,7 +274,6 @@ async function checkPasscode(request, env, passcode) {
     const { success } = await env.PASSCODE_LIMITER.limit({ key });
     if (!success) throw new HttpError(429, "Too many tries. Wait a minute and try again.");
   }
-  if (!env.PASSCODE_HASH) throw new Error("PASSCODE_HASH secret is not set");
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(passcode ?? "").trim()));
   const hex = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
   if (!timingSafeEqual(hex, env.PASSCODE_HASH.trim().toLowerCase())) throw new HttpError(401, "That passcode isn't right.");

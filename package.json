@@ -1,0 +1,31 @@
+{
+  "name": "odin-recipes",
+  "version": "1.0.0",
+  "description": "Vanessa and Matty's family recipe site",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "test": "node --test \"lib/**/*.test.js\" \"worker/test/*.test.js\"",
+    "parse": "node scripts/parse-url.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zemoGGG/odin-recipes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/zemoGGG/odin-recipes/issues"
+  },
+  "homepage": "https://github.com/zemoGGG/odin-recipes#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy-img": "^7.0.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}

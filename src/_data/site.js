@@ -14,6 +14,7 @@ export default {
   // Family members with a personal cookbook (recipes imported from other sites).
   // The key is used in URLs (/cookbooks/<key>/) and must be lowercase letters, numbers or dashes.
   members: [
+    { key: "matt", label: "Matt's Cookbook", short: "Matt" },
     { key: "mom", label: "Mom's Cookbook", short: "Mom" },
     { key: "hannah", label: "Hannah's Cookbook", short: "Hannah" },
   ],

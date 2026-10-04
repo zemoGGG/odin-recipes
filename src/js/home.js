@@ -54,7 +54,54 @@
     setPressed(tabs, "author", state.author);
     setPressed(chips, "category", state.category);
     emptyState.hidden = anyVisible;
+    showToolbar();
   }
+
+  // Mobile: tuck the toolbar away while scrolling down, bring it back on scroll up.
+  const toolbar = document.querySelector(".toolbar");
+  const mobile = matchMedia("(max-width: 799px)"); // keep in sync with main.css
+  const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 60;
+  let lastY = null;
+  let ticking = false;
+
+  function showToolbar() {
+    toolbar.classList.remove("is-hidden");
+    lastY = null; // ignore any jump (e.g. scrolling to a kitchen) caused by this change
+  }
+
+  function onScroll() {
+    ticking = false;
+    const y = window.scrollY;
+    // The toolbar is the first thing in its .wrap, so that's where it sits before it sticks.
+    const stuckAt = toolbar.parentElement.getBoundingClientRect().top + y - headerHeight;
+
+    if (!mobile.matches || y <= stuckAt || document.activeElement === search) {
+      toolbar.classList.remove("is-hidden");
+      lastY = y;
+      return;
+    }
+    if (lastY === null) {
+      lastY = y;
+      return;
+    }
+    const delta = y - lastY;
+    if (Math.abs(delta) < 8) return;
+    toolbar.classList.toggle("is-hidden", delta > 0);
+    lastY = y;
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(onScroll);
+      }
+    },
+    { passive: true }
+  );
+  mobile.addEventListener("change", showToolbar);
+  search.addEventListener("focus", showToolbar);
 
   tabs.forEach((tab) =>
     tab.addEventListener("click", () => {

@@ -20,6 +20,7 @@
     --font-display: "Fraunces", Georgia, serif;
     --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     --wrap: 1180px;
+    --header-h: 60px;
     color-scheme: light;
 }
 
@@ -160,6 +161,64 @@ html:not(.js) [data-enhanced] { display: none; }
 }
 .site-nav-link:hover { background: var(--author-tint); }
 
+.nav-toggle {
+    display: none;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+}
+.nav-toggle:hover, .nav-toggle[aria-expanded="true"] { background: var(--surface-2); }
+
+.nav-toggle-bar {
+    transform-origin: 12px 12px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-top { transform: translateY(5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-mid { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bot { transform: translateY(-5px) rotate(-45deg); }
+
+/* Mobile: collapse the nav into a dropdown behind the hamburger (JS only; without JS it wraps inline). */
+@media (max-width: 719px) {
+    html.js .site-header-inner { flex-wrap: nowrap; height: var(--header-h); padding-block: 0; }
+    html.js .brand { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    html.js .nav-toggle { display: grid; }
+
+    html.js .site-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 2px;
+        padding: 8px 16px 16px;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        opacity: 0;
+        transform: translateY(-8px);
+        visibility: hidden;
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+    html.js .site-header.is-open .site-nav { opacity: 1; transform: none; visibility: visible; }
+
+    html.js .site-nav-link {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 8px 14px;
+        border-radius: 12px;
+        font-size: 1rem;
+    }
+}
+
 .site-footer {
     margin-top: 64px;
     border-top: 1px solid var(--line);
@@ -191,10 +250,17 @@ html:not(.js) [data-enhanced] { display: none; }
     gap: 14px;
     margin-bottom: 8px;
     position: sticky;
-    top: 60px;
+    top: var(--header-h);
     z-index: 4;
     padding-block: 12px;
     background: var(--bg);
+    transition: transform 0.25s ease, visibility 0.25s;
+}
+
+/* Set by home.js on mobile while scrolling down; slides fully behind the translucent header. */
+.toolbar.is-hidden {
+    transform: translateY(calc(-100% - var(--header-h)));
+    visibility: hidden;
 }
 
 @media (min-width: 800px) {
@@ -263,6 +329,20 @@ html:not(.js) [data-enhanced] { display: none; }
     background: var(--ink);
     border-color: var(--ink);
     color: var(--bg);
+}
+
+/* Mobile: compact toolbar with one swipeable row of chips. */
+@media (max-width: 799px) {
+    .toolbar { gap: 10px; padding-block: 10px; }
+    .chips {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin-inline: -16px;
+        padding-inline: 16px;
+    }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { flex: none; white-space: nowrap; }
 }
 
 .kitchen { margin-top: 32px; scroll-margin-top: 200px; }

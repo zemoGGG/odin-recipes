@@ -1,8 +1,6 @@
-# Vanessa & Matty's Recipes
+# Recipe Website
 
 Our family recipe site: **https://zemoggg.github.io/odin-recipes/**
-
-It started as the final project of [The Odin Project](https://www.theodinproject.com/)'s HTML Foundations course. It has grown into the place where we keep the recipes we actually cook, and where the rest of the family can keep theirs.
 
 ## What's on the site
 
@@ -37,7 +35,7 @@ Some websites block the importer. When that happens, the form still opens, so yo
 ## How it's built
 
 - Recipes are plain Markdown files, built into a fast static site by [Eleventy](https://www.11ty.dev/) and hosted on GitHub Pages.
-- Matty and Vanessa edit their recipes through [Sveltia CMS](https://github.com/sveltia/sveltia-cms).
+- Admins edit their recipes through [Sveltia CMS](https://github.com/sveltia/sveltia-cms).
 - A small [Cloudflare Worker](https://developers.cloudflare.com/workers/) reads recipes from other websites for the importer. It uses the [schema.org Recipe](https://schema.org/Recipe) data that most recipe sites include.
 - Photos are resized automatically when the site is built.
 

@@ -1,0 +1,38 @@
+---
+title: "Garlic Butter Chicken"
+cookbook: "mom"
+category: "mains"
+status: "published"
+description: "🧄🧈🍗 Tender, juicy chicken bathed in a rich garlic butter sauce with a splash of wine for extra flavor! This EASY stovetop chicken recipe is ready in 15 minutes and will become a family FAVORITE!"
+image: "/images/cookbooks/garlic-butter-chicken.webp"
+image_alt: "Garlic Butter Chicken"
+servings: "4 servings"
+prep_time: "5 min"
+cook_time: "15 min"
+total_time: "20 min"
+source_url: "https://www.averiecooks.com/garlic-butter-chicken/"
+source_name: "Averie Cooks"
+source_author: "Averie Sunshine"
+imported_at: "2026-10-04"
+ingredient_groups:
+  - items:
+      - "3 tablespoons olive oil"
+      - "1 1/2 pounds boneless skinless chicken breasts (pounded to an even thickness (4 average-sized breasts))"
+      - "1 to 2 teaspoons 21 Salute Seasoning or poultry seasoning"
+      - "1 teaspoon kosher salt (or to taste)"
+      - "1 teaspoon freshly ground black pepper (or to taste)"
+      - "1/2 cup white wine* or chicken broth (or as necessary)"
+      - "3 tablespoons unsalted butter (or more if you want extra sauce)"
+      - "1 tablespoon garlic (finely minced; or to taste)"
+      - "2 teaspoons fresh parsley (optional for garnishing)"
+step_groups:
+  - steps:
+      - "To a large skillet, add the olive oil, pounded chicken, evenly season with 21 Salute (or your favorite poultry seasoning) salt, pepper, and cook over medium-high heat for 5 minutes. Do not touch, move, or disturb the chicken while it is searing. After 5 minutes, flip chicken over. It should have a medium golden color. For thicker/bigger chicken breasts, sear for 6-7 minutes."
+      - "Allow chicken to cook on the second side for about 5 minutes, or until done and cooked through. Again, do not disturb the chicken while it's searing."
+      - "Remove chicken with a slotted spatula and place it on a plate to rest."
+      - "Using caution, deglaze your skillet by adding wine (or broth) and allow the liquid to bubble up and steam violently for a few seconds."
+      - "Add the butter and allow it to melt, about 1 minute; stir continuously until melted."
+      - "Add the garlic and cook until fragrant, about 1 minutes; stir continuously."
+      - "Turn the heat off, add the chicken back into the skillet, flip it around in the garlic butter sauce, and spoon the sauce over the chicken."
+      - "Optionally garnish with parsley and serve immediately."
+---

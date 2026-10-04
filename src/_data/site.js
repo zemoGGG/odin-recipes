@@ -19,7 +19,7 @@ export default {
   ],
 
   // Cloudflare Worker that parses and saves imported recipes (see worker/README.md).
-  importApi: "https://odin-recipes-import.example.workers.dev",
+  importApi: "https://odin-recipes-import.matthewm711college.workers.dev",
 
   categories: [
     { key: "mains", label: "Mains" },

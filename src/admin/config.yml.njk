@@ -1,0 +1,182 @@
+---
+permalink: admin/config.yml
+eleventyExcludeFromCollections: true
+---
+{#- Sveltia CMS config. Author/category/status options come from src/_data/site.js. -#}
+backend:
+  name: github
+  repo: {{ site.repo }}
+  branch: main
+  commit_messages:
+    create: "Add recipe: {{ '{{slug}}' }}"
+    update: "Update recipe: {{ '{{slug}}' }}"
+    delete: "Delete recipe: {{ '{{slug}}' }}"
+    uploadMedia: "Upload image: {{ '{{path}}' }}"
+    deleteMedia: "Delete image: {{ '{{path}}' }}"
+
+site_url: {{ site.url }}
+display_url: {{ site.url }}
+logo_url: {{ site.url }}favicon.ico
+
+media_folder: src/images/recipes
+public_folder: /images/recipes
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: ""
+
+collections:
+  - name: recipes
+    label: Recipes
+    label_singular: Recipe
+    description: Published recipes get their own page. "Coming soon" shows a card only. Drafts are hidden from the site.
+    folder: src/recipes
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{ '{{slug}}' }}"
+    identifier_field: title
+    summary: "{{ '{{title}}' }} · {{ '{{author}}' }} · {{ '{{status}}' }}"
+    preview_path: "recipes/{{ '{{slug}}' }}.html"
+    sortable_fields: [title, author, category, status]
+    view_groups:
+      - { label: Status, field: status }
+      - { label: Kitchen, field: author }
+      - { label: Category, field: category }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Kitchen
+        name: author
+        widget: select
+        default: {{ site.authors[0].key }}
+        options:
+          {%- for a in site.authors %}
+          - { label: {{ a.label | dump | safe }}, value: {{ a.key }} }
+          {%- endfor %}
+      - label: Category
+        name: category
+        widget: select
+        options:
+          {%- for c in site.categories %}
+          - { label: {{ c.label | dump | safe }}, value: {{ c.key }} }
+          {%- endfor %}
+      - label: Status
+        name: status
+        widget: select
+        default: draft
+        options:
+          {%- for s in site.statuses %}
+          - { label: {{ s.label | dump | safe }}, value: {{ s.key }} }
+          {%- endfor %}
+      - { label: "Specialty ★", name: specialty, widget: boolean, default: false, required: false, hint: Shows a gold star on the card and page. }
+      - { label: Photo, name: image, widget: image, required: false, hint: "JPG, PNG or WebP. Big photos are fine; the site resizes them." }
+      - { label: Photo description, name: image_alt, widget: string, required: false, hint: "What's in the photo, for screen readers. Defaults to the title." }
+      - { label: Short description, name: description, widget: text, required: false }
+      - { label: Difficulty, name: difficulty, widget: number, value_type: int, min: 1, max: 5, required: false, hint: 1 (easy) to 5 (hard) }
+      - { label: Makes / serves, name: servings, widget: string, required: false, hint: "e.g. 4 servings, 9 rolls" }
+      - { label: Prep time, name: prep_time, widget: string, required: false, hint: "e.g. 20 min" }
+      - { label: Cook time, name: cook_time, widget: string, required: false, hint: "e.g. 1 hr 30 min" }
+      - label: Ingredients
+        name: ingredient_groups
+        label_singular: ingredient group
+        widget: list
+        required: false
+        summary: "{{ '{{fields.name}}' }}"
+        hint: Use one group for a simple list, or several (Marinade, Sauce…) for multi-part recipes.
+        fields:
+          - { label: Group name, name: name, widget: string, required: false, hint: Leave blank for a single list. }
+          - label: Ingredients
+            name: items
+            widget: list
+            field: { label: Ingredient, name: item, widget: string, hint: "e.g. Garlic (2 cloves, minced)" }
+      - label: Steps
+        name: step_groups
+        label_singular: step group
+        widget: list
+        required: false
+        summary: "{{ '{{fields.name}}' }}"
+        fields:
+          - { label: Group name, name: name, widget: string, required: false, hint: Leave blank for a single list. }
+          - label: Steps
+            name: steps
+            widget: list
+            field: { label: Step, name: step, widget: text }
+      - { label: Notes & tips, name: body, widget: markdown, required: false }
+
+  - name: family
+    label: Family cookbooks
+    label_singular: Imported recipe
+    description: Recipes family members imported from other sites through /cookbooks/import/. Set Status to "Draft" to hide one.
+    folder: src/cookbooks
+    extension: md
+    format: frontmatter
+    create: false
+    slug: "{{ '{{slug}}' }}"
+    identifier_field: title
+    summary: "{{ '{{title}}' }} · {{ '{{cookbook}}' }} · {{ '{{status}}' }}"
+    media_folder: /src/images/cookbooks
+    public_folder: /images/cookbooks
+    sortable_fields: [title, cookbook, category, status]
+    view_groups:
+      - { label: Cookbook, field: cookbook }
+      - { label: Status, field: status }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Cookbook
+        name: cookbook
+        widget: select
+        options:
+          {%- for m in site.members %}
+          - { label: {{ m.label | dump | safe }}, value: {{ m.key }} }
+          {%- endfor %}
+      - label: Category
+        name: category
+        widget: select
+        options:
+          {%- for c in site.categories %}
+          - { label: {{ c.label | dump | safe }}, value: {{ c.key }} }
+          {%- endfor %}
+      - label: Status
+        name: status
+        widget: select
+        default: published
+        options:
+          - { label: Published, value: published }
+          - { label: "Draft (hidden)", value: draft }
+      - { label: Photo, name: image, widget: image, required: false }
+      - { label: Photo description, name: image_alt, widget: string, required: false }
+      - { label: Short description, name: description, widget: text, required: false }
+      - { label: Makes / serves, name: servings, widget: string, required: false }
+      - { label: Prep time, name: prep_time, widget: string, required: false }
+      - { label: Cook time, name: cook_time, widget: string, required: false }
+      - { label: Total time, name: total_time, widget: string, required: false }
+      - label: Ingredients
+        name: ingredient_groups
+        label_singular: ingredient group
+        widget: list
+        required: false
+        summary: "{{ '{{fields.name}}' }}"
+        fields:
+          - { label: Group name, name: name, widget: string, required: false }
+          - label: Ingredients
+            name: items
+            widget: list
+            field: { label: Ingredient, name: item, widget: string }
+      - label: Steps
+        name: step_groups
+        label_singular: step group
+        widget: list
+        required: false
+        summary: "{{ '{{fields.name}}' }}"
+        fields:
+          - { label: Group name, name: name, widget: string, required: false }
+          - label: Steps
+            name: steps
+            widget: list
+            field: { label: Step, name: step, widget: text }
+      - { label: Original recipe link, name: source_url, widget: string, required: false }
+      - { label: Original site, name: source_name, widget: string, required: false }
+      - { label: Original author, name: source_author, widget: string, required: false }
+      - { label: Imported on, name: imported_at, widget: string, required: false }
+      - { label: Notes, name: body, widget: markdown, required: false }

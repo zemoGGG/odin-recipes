@@ -1,0 +1,98 @@
+---
+layout: layouts/base.njk
+pageScript: /js/recipe.js
+---
+{%- if cookbook -%}
+    {#- Imported into a family member's personal cookbook -#}
+    {%- set authorInfo = site.members | lookup(cookbook) -%}
+    {%- set accent = "family" -%}
+    {%- set backUrl = "/cookbooks/" + cookbook + "/" -%}
+    {%- set backLabel = "← " + authorInfo.label -%}
+{%- else -%}
+    {%- set authorInfo = site.authors | lookup(author) -%}
+    {%- set accent = author -%}
+    {%- set backUrl = "/#" + author -%}
+    {%- set backLabel = "← All recipes" -%}
+{%- endif -%}
+{%- set categoryInfo = site.categories | lookup(category) -%}
+<article class="recipe author-{{ accent }}">
+    <div class="wrap">
+        <a class="back-link" href="{{ backUrl }}">{{ backLabel }}</a>
+
+        <header class="recipe-hero{% if not image %} no-image{% endif %}">
+            {% if image %}
+            <div class="recipe-hero-media">
+                {% image image, image_alt or title, "(min-width: 960px) 560px, 100vw", "", true %}
+            </div>
+            {% endif %}
+            <div class="recipe-hero-text">
+                <p class="eyebrow">
+                    <span class="pill">{{ authorInfo.label }}</span>
+                    <span>{{ categoryInfo.label }}</span>
+                </p>
+                <h1>{{ title }}</h1>
+                {% if specialty %}<p class="specialty"><span class="star" aria-hidden="true">★</span> {{ authorInfo.specialty }}</p>{% endif %}
+                {% if description %}<p class="lede">{{ description }}</p>{% endif %}
+                {% if source_url %}
+                <p class="source-credit">Adapted from <a href="{{ source_url }}" rel="noopener">{{ source_name or "the original recipe" }}<span aria-hidden="true"> ↗</span></a>{% if source_author %} · by {{ source_author }}{% endif %}</p>
+                {% endif %}
+
+                {% if difficulty or servings or prep_time or cook_time or total_time %}
+                <dl class="meta">
+                    {% if difficulty %}
+                    <div>
+                        <dt>Difficulty</dt>
+                        <dd><span class="dots" aria-hidden="true">{% for i in range(0, 5) %}<span class="dot{% if i < difficulty %} on{% endif %}"></span>{% endfor %}</span><span class="visually-hidden">{{ difficulty }} of 5</span></dd>
+                    </div>
+                    {% endif %}
+                    {% if servings %}<div><dt>Makes</dt><dd>{{ servings }}</dd></div>{% endif %}
+                    {% if prep_time %}<div><dt>Prep</dt><dd>{{ prep_time }}</dd></div>{% endif %}
+                    {% if cook_time %}<div><dt>Cook</dt><dd>{{ cook_time }}</dd></div>{% endif %}
+                    {% if total_time %}<div><dt>Total</dt><dd>{{ total_time }}</dd></div>{% endif %}
+                </dl>
+                {% endif %}
+
+                <button class="button print-button" type="button" hidden>Print recipe</button>
+            </div>
+        </header>
+
+        <div class="recipe-body">
+            {% if ingredient_groups and ingredient_groups.length %}
+            <section class="ingredients panel" aria-labelledby="ingredients-heading">
+                <h2 id="ingredients-heading">Ingredients</h2>
+                {% for group in ingredient_groups %}
+                    {% if group.name %}<h3>{{ group.name }}</h3>{% endif %}
+                    <ul class="checklist">
+                        {% for item in group.items %}
+                        <li><label><input type="checkbox"> <span>{{ item }}</span></label></li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </section>
+            {% endif %}
+
+            <div class="recipe-main">
+                {% if step_groups and step_groups.length %}
+                <section class="steps" aria-labelledby="steps-heading">
+                    <h2 id="steps-heading">Steps</h2>
+                    {% for group in step_groups %}
+                        {% if group.name %}<h3>{{ group.name }}</h3>{% endif %}
+                        <ol>
+                            {% for step in group.steps %}
+                            <li>{{ step }}</li>
+                            {% endfor %}
+                        </ol>
+                    {% endfor %}
+                </section>
+                {% endif %}
+
+                {% if content | trim %}
+                <section class="notes" aria-labelledby="notes-heading">
+                    <h2 id="notes-heading">Notes</h2>
+                    {{ content | safe }}
+                </section>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</article>

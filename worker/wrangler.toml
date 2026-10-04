@@ -1,0 +1,19 @@
+# Cloudflare Worker behind the Family Cookbooks import page (src/family-import.njk).
+# Secrets (set once with `npx wrangler secret put <NAME>`):
+#   GITHUB_TOKEN   fine-grained token: only this repo, Contents read and write
+#   PASSCODE_HASH  output of `npm run hash-passcode`
+name = "odin-recipes-import"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+[vars]
+REPO = "zemoGGG/odin-recipes"
+BRANCH = "main"
+SITE_URL = "https://zemoggg.github.io/odin-recipes/"
+ALLOWED_ORIGINS = "https://zemoggg.github.io,http://localhost:8080"
+
+# Slows down passcode guessing: at most 20 requests per minute from one IP address.
+[[ratelimits]]
+name = "PASSCODE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 20, period = 60 }

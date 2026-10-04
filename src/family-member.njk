@@ -1,0 +1,51 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: site.members
+  size: 1
+  alias: member
+permalink: "cookbooks/{{ member.key }}/index.html"
+pageScript: /js/home.js
+noindex: true
+eleventyComputed:
+  title: "{{ member.label }}"
+---
+{%- set recipes = collections.personalRecipes | byMember(member.key) -%}
+<section class="hero author-family">
+    <div class="wrap">
+        <a class="back-link" href="/cookbooks/">← All family cookbooks</a>
+        <h1>{{ member.label }}</h1>
+        <p class="hero-tagline">Recipes {{ member.short }} saved from around the web.</p>
+        <a class="button button-primary" href="/cookbooks/import/?for={{ member.key }}">Import a recipe</a>
+    </div>
+</section>
+
+<div class="wrap">
+    {% if recipes.length %}
+    <div class="toolbar" data-enhanced>
+        <label class="search">
+            <span class="visually-hidden">Search {{ member.short }}'s recipes</span>
+            <input type="search" id="search" placeholder="Search recipes or ingredients…" autocomplete="off">
+        </label>
+        <div class="chips" role="group" aria-label="Filter by category">
+            <button type="button" class="chip" data-category="all" aria-pressed="true">Everything</button>
+            {% for category in recipes | usedCategories(site.categories) %}
+            <button type="button" class="chip" data-category="{{ category.key }}" aria-pressed="false">{{ category.label }}</button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <section class="kitchen author-family" data-author="{{ member.key }}" aria-label="{{ member.label }}">
+        <ul class="grid" role="list">
+            {#- asyncEach (not for) so the async image shortcode inside each card can run. -#}
+            {% asyncEach recipe in recipes %}
+                {% include "partials/recipe-card.njk" %}
+            {% endeach %}
+        </ul>
+    </section>
+
+    <p class="empty-state" id="empty-state" hidden>No recipes match that search. <button type="button" class="link-button" id="clear-filters">Clear filters</button></p>
+    {% else %}
+    <p class="empty-state">No recipes yet. <a href="/cookbooks/import/?for={{ member.key }}">Import the first one</a>.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,23 @@
+{%- set r = recipe.data -%}
+{%- set author = site.authors | lookup(r.author) -%}
+{%- set category = site.categories | lookup(r.category) -%}
+{%- set soon = r.status == "coming-soon" -%}
+<li class="card{% if soon %} is-soon{% endif %}" data-category="{{ r.category }}" data-search="{{ r | searchText }}">
+    {% if soon %}<div class="card-inner">{% else %}<a class="card-inner" href="{{ recipe.url }}">{% endif %}
+        <div class="card-media">
+            {% if r.image %}
+                {% image r.image, r.image_alt or r.title, "(min-width: 1100px) 340px, (min-width: 640px) 45vw, 100vw" %}
+            {% else %}
+                <div class="card-placeholder" aria-hidden="true">{{ r.title | first }}</div>
+            {% endif %}
+            {% if soon %}<span class="badge badge-soon">Coming soon</span>{% endif %}
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">
+                {% if r.specialty %}<span class="star" title="{{ author.specialty }}" aria-label="{{ author.specialty }}">★</span>{% endif %}
+                {{ r.title }}
+            </h3>
+            <p class="card-meta">{{ category.label }}{% if r.difficulty %} · {% for i in range(0, 5) %}<span class="dot{% if i < r.difficulty %} on{% endif %}" aria-hidden="true"></span>{% endfor %}<span class="visually-hidden">Difficulty {{ r.difficulty }} of 5</span>{% endif %}</p>
+        </div>
+    {% if soon %}</div>{% else %}</a>{% endif %}
+</li>

@@ -1,0 +1,48 @@
+---
+layout: layouts/base.njk
+pageScript: /js/home.js
+---
+<section class="hero">
+    <div class="wrap">
+        <h1>{{ site.title }}</h1>
+        <p class="hero-tagline">{{ site.tagline }}</p>
+    </div>
+</section>
+
+<div class="wrap">
+    <div class="toolbar" data-enhanced>
+        <div class="tabs" role="group" aria-label="Show recipes from">
+            <button type="button" class="tab" data-author="all" aria-pressed="true">All</button>
+            {% for author in site.authors %}
+            <button type="button" class="tab author-{{ author.key }}" data-author="{{ author.key }}" aria-pressed="false">{{ author.label }}</button>
+            {% endfor %}
+        </div>
+        <label class="search">
+            <span class="visually-hidden">Search recipes</span>
+            <input type="search" id="search" placeholder="Search recipes or ingredients…" autocomplete="off">
+        </label>
+        <div class="chips" role="group" aria-label="Filter by category">
+            <button type="button" class="chip" data-category="all" aria-pressed="true">Everything</button>
+            {% for category in collections.recipes | usedCategories(site.categories) %}
+            <button type="button" class="chip" data-category="{{ category.key }}" aria-pressed="false">{{ category.label }}</button>
+            {% endfor %}
+        </div>
+    </div>
+
+    {#- asyncEach (not for) so the async image shortcode inside each card can run. -#}
+    {% asyncEach author in site.authors %}
+    {% set recipes = collections.recipes | byAuthor(author.key) %}
+    {% if recipes.length %}
+    <section class="kitchen author-{{ author.key }}" id="{{ author.key }}" data-author="{{ author.key }}" aria-labelledby="{{ author.key }}-heading">
+        <h2 class="kitchen-heading" id="{{ author.key }}-heading">{{ author.label }}</h2>
+        <ul class="grid" role="list">
+            {% asyncEach recipe in recipes %}
+                {% include "partials/recipe-card.njk" %}
+            {% endeach %}
+        </ul>
+    </section>
+    {% endif %}
+    {% endeach %}
+
+    <p class="empty-state" id="empty-state" hidden>No recipes match that search. <button type="button" class="link-button" id="clear-filters">Clear filters</button></p>
+</div>

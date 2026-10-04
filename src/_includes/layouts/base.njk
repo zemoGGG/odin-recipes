@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if title %}{{ title }} · {% endif %}{{ site.title }}</title>
+    {% if description %}<meta name="description" content="{{ description }}">{% endif %}
+    {% if noindex %}<meta name="robots" content="noindex">{% endif %}
+    <link rel="icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="/css/main.css">
+    <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+        <div class="wrap site-header-inner">
+            <a class="brand" href="/">{{ site.title }}</a>
+            <nav class="site-nav" aria-label="Sections">
+                {% for author in site.authors %}
+                <a class="site-nav-link author-{{ author.key }}" href="/#{{ author.key }}">{{ author.label }}</a>
+                {% endfor %}
+                <a class="site-nav-link author-family" href="/cookbooks/">Family Cookbooks</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        {{ content | safe }}
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p>{{ site.title }}</p>
+        </div>
+    </footer>
+
+    {% if pageScript %}<script src="{{ pageScript }}" defer></script>{% endif %}
+</body>
+</html>

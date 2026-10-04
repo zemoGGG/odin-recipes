@@ -1,0 +1,122 @@
+---
+layout: layouts/base.njk
+permalink: cookbooks/import/index.html
+title: Import a recipe
+description: Save a recipe from another website into your family cookbook.
+noindex: true
+pageScript: /js/import.js
+---
+<div class="wrap author-family">
+    <a class="back-link" href="/cookbooks/">← Family Cookbooks</a>
+
+    <div class="import" id="import" data-api="{{ site.importApi }}">
+        <header>
+            <h1>Import a recipe</h1>
+            <p class="lede">Paste a link to a recipe from any website. We'll pull out the ingredients and steps so you can check them over and save them to a family cookbook.</p>
+        </header>
+
+        <noscript><p class="status-msg is-error">The importer needs JavaScript turned on.</p></noscript>
+
+        <form class="panel" id="fetch-form" data-enhanced>
+            <h2>1. Find the recipe</h2>
+            <div class="form-row" id="passcode-row">
+                <label for="passcode">Family passcode</label>
+                <input id="passcode" type="password" autocomplete="current-password" required>
+                <span class="form-hint">You only need to enter it once on this device.</span>
+            </div>
+            <div class="form-row">
+                <label for="member">Whose cookbook?</label>
+                <select id="member" required>
+                    <option value="">Choose…</option>
+                    {% for member in site.members %}
+                    <option value="{{ member.key }}">{{ member.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="url">Recipe link</label>
+                <input id="url" type="url" inputmode="url" placeholder="https://…" autocomplete="off">
+                <span class="form-hint">Copy it from your browser's address bar while you're on the recipe.</span>
+            </div>
+            <div class="form-actions">
+                <button class="button button-primary" type="submit" id="fetch-button">Get recipe</button>
+                <button class="link-button" type="button" id="manual-button">Or type one in by hand</button>
+            </div>
+        </form>
+
+        <div class="status-msg" id="status" role="status" hidden></div>
+
+        <form class="panel" id="recipe-form" hidden>
+            <h2>2. Check it over</h2>
+
+            <p class="source-credit" id="source-credit" hidden></p>
+
+            <div class="form-row" id="photo-row" hidden>
+                <div class="import-photo"><img id="photo" alt="" referrerpolicy="no-referrer"></div>
+                <label class="checkbox"><input type="checkbox" id="use-photo" checked> Save this photo with the recipe</label>
+            </div>
+
+            <div class="form-row">
+                <label for="title">Title</label>
+                <input id="title" type="text" required maxlength="200">
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        {% for category in site.categories %}
+                        <option value="{{ category.key }}">{{ category.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="servings">Makes / serves</label>
+                    <input id="servings" type="text" maxlength="60" placeholder="4 servings">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-row"><label for="prep_time">Prep time</label><input id="prep_time" type="text" maxlength="60" placeholder="20 min"></div>
+                <div class="form-row"><label for="cook_time">Cook time</label><input id="cook_time" type="text" maxlength="60" placeholder="1 hr"></div>
+                <div class="form-row"><label for="total_time">Total time</label><input id="total_time" type="text" maxlength="60"></div>
+            </div>
+            <div class="form-row">
+                <label for="description">Short description</label>
+                <textarea id="description" rows="3" maxlength="1000"></textarea>
+            </div>
+
+            <h3 class="form-section">Ingredients</h3>
+            <p class="form-hint">One ingredient per line. For multi-part recipes, add a group (like "Sauce") for each part.</p>
+            <div id="ingredient-groups" data-list="items" data-label="Ingredients"></div>
+            <button type="button" class="link-button" data-add-group="ingredient-groups">+ Add an ingredient group</button>
+
+            <h3 class="form-section">Steps</h3>
+            <p class="form-hint">One step per line.</p>
+            <div id="step-groups" data-list="steps" data-label="Steps"></div>
+            <button type="button" class="link-button" data-add-group="step-groups">+ Add a step group</button>
+
+            <div class="form-row form-section">
+                <label for="notes">My notes</label>
+                <textarea id="notes" rows="3" maxlength="5000" placeholder="Swaps, tips, who loved it…"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button class="button button-primary" type="submit" id="save-button">Save to cookbook</button>
+                <button class="link-button" type="button" id="start-over">Start over</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<template id="group-template">
+    <div class="group-editor">
+        <div class="form-row">
+            <label data-for="name">Group name <span class="form-hint">(optional)</span></label>
+            <input data-id="name" type="text" maxlength="100" placeholder="e.g. Sauce">
+        </div>
+        <div class="form-row">
+            <label data-for="lines"></label>
+            <textarea data-id="lines" rows="8"></textarea>
+        </div>
+        <button type="button" class="link-button" data-remove-group>Remove this group</button>
+    </div>
+</template>

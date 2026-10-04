@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+permalink: cookbooks/index.html
+title: Family Cookbooks
+description: Recipes the family has saved from around the web, in one easy-to-read place.
+noindex: true
+---
+<section class="hero author-family">
+    <div class="wrap">
+        <h1>Family Cookbooks</h1>
+        <p class="hero-tagline">{{ description }}</p>
+        <a class="button button-primary" href="/cookbooks/import/">Import a recipe</a>
+    </div>
+</section>
+
+<div class="wrap">
+    <ul class="grid" role="list">
+        {% for member in site.members %}
+        {% set count = (collections.personalRecipes | byMember(member.key)).length %}
+        <li class="card author-family">
+            <a class="card-inner" href="/cookbooks/{{ member.key }}/">
+                <div class="card-media">
+                    <div class="card-placeholder" aria-hidden="true">{{ member.short | first }}</div>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">{{ member.label }}</h2>
+                    <p class="card-meta">{{ count }} recipe{% if count != 1 %}s{% endif %}</p>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

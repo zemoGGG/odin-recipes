@@ -1,6 +1,6 @@
 # Recipe Website
 
-Our family recipe site: **https://zemoggg.github.io/odin-recipes/**
+Our family recipe site: **https://cookbook.matthewmar.com/**
 
 ## What's on the site
 
@@ -13,9 +13,9 @@ A gold star ★ marks a house specialty. Recipes marked *Coming soon* are on the
 
 ### Family Cookbooks
 
-Everyone in the family gets their own cookbook at [/cookbooks/](https://zemoggg.github.io/odin-recipes/cookbooks/). To add a recipe from another website:
+Everyone in the family gets their own cookbook at [/cookbooks/](https://cookbook.matthewmar.com/cookbooks/). To add a recipe from another website:
 
-1. Open [Import a recipe](https://zemoggg.github.io/odin-recipes/cookbooks/import/).
+1. Open [Import a recipe](https://cookbook.matthewmar.com/cookbooks/import/).
 2. Enter the family passcode (ask Matty). You only need to do this once per device.
 3. Pick your name, paste the link to the recipe, and click **Get recipe**.
 4. Check the ingredients and steps, fix anything that looks off, add your own notes, and click **Save**.
@@ -34,7 +34,7 @@ Some websites block the importer. When that happens, the form still opens, so yo
 
 ## How it's built
 
-- Recipes are plain Markdown files, built into a fast static site by [Eleventy](https://www.11ty.dev/) and hosted on GitHub Pages.
+- Recipes are plain Markdown files, built into a fast static site by [Eleventy](https://www.11ty.dev/) and hosted on GitHub Pages at cookbook.matthewmar.com.
 - Admins edit their recipes through [Sveltia CMS](https://github.com/sveltia/sveltia-cms).
 - A small [Cloudflare Worker](https://developers.cloudflare.com/workers/) reads recipes from other websites for the importer. It uses the [schema.org Recipe](https://schema.org/Recipe) data that most recipe sites include.
 - Photos are resized automatically when the site is built.
@@ -43,6 +43,6 @@ To run it locally:
 
 ```sh
 npm install
-npm start   # http://localhost:8080/odin-recipes/
+npm start   # http://localhost:8080/
 npm test
 ```

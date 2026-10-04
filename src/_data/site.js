@@ -3,7 +3,7 @@
 export default {
   title: "Vanessa & Matty's Recipes",
   tagline: "Family recipes from Matty's kitchen and Vanessa's bakery.",
-  url: "https://zemoggg.github.io/odin-recipes/",
+  url: "https://cookbook.matthewmar.com/",
   repo: "zemoGGG/odin-recipes",
 
   authors: [

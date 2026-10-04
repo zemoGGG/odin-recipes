@@ -10,8 +10,8 @@ compatibility_date = "2025-09-01"
 [vars]
 REPO = "zemoGGG/odin-recipes"
 BRANCH = "main"
-SITE_URL = "https://zemoggg.github.io/odin-recipes/"
-ALLOWED_ORIGINS = "https://zemoggg.github.io,http://localhost:8080"
+SITE_URL = "https://cookbook.matthewmar.com/"
+ALLOWED_ORIGINS = "https://cookbook.matthewmar.com,http://localhost:8080"
 
 # Slows down passcode guessing: at most 20 requests per minute from one IP address.
 [[ratelimits]]

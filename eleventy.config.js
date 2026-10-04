@@ -84,7 +84,7 @@ export default function (eleventyConfig) {
     // Recipe notes are plain Markdown written in the CMS; don't treat {{ }} in them as template code.
     markdownTemplateEngine: false,
     htmlTemplateEngine: "njk",
-    // GitHub Pages serves this repo at https://zemoggg.github.io/odin-recipes/
-    pathPrefix: "/odin-recipes/",
+    // Served from the root of https://cookbook.matthewmar.com/ (GitHub Pages custom domain)
+    pathPrefix: "/",
   };
 }
